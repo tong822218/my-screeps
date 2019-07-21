@@ -4,6 +4,7 @@ var roleBuilder = require('role.builder');
 var roleAttack = require('role.attack');
 
 module.exports.loop = function () {
+    console.log(222);
     
     // var tower = Game.getObjectById('62ef2691248d6ffcd766d5a7');
     // if(tower) {
