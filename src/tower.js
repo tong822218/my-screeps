@@ -11,7 +11,7 @@ Tower.prototype.attack = function (target) {
     this.tower.attack(target);
 }
 Tower.prototype.repair = function (target) {
-    tower.repair(target);
+    this.tower.repair(target);
 }
 Tower.prototype.findClosestHostileCreep = function () {
     return closestHostile = this.tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
