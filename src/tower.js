@@ -1,3 +1,8 @@
+/**
+ * 塔的基类
+ * @param {tower} tower 
+ */
+
 var Tower = function (tower) {
     this.tower = tower
 }
@@ -18,7 +23,7 @@ Tower.prototype.findClosestHostileCreep = function () {
 }
 Tower.prototype.findClosestNotFullHitsStructures = function () {
     return this.tower.pos.findClosestByRange(FIND_STRUCTURES, {
-        filter: (structure) => structure.hits < structure.hitsMax
+        filter: (structure) => structure.hits < structure.hitsMax && structure.structureType != STRUCTURE_WALL
     });
 }
 // 找到最近的受伤creep
@@ -29,15 +34,18 @@ Tower.prototype.findClosestNotFullHitsCreep = function () {
 }
 // 修复受损建筑
 Tower.prototype.repairClosestStructure = function () {
-    const structure = this.findClosestNotFullHitsStructures()
-    if(structure){
-        this.repair(structure)
+    if (this.tower.energy > this.tower.energyCapacity / 3) { // 多于1/3能量时再修复建筑，留下的能量应对入侵
+        const structure = this.findClosestNotFullHitsStructures()
+        if (structure) {
+            this.repair(structure)
+        }
     }
+
 }
 // 修复受损creep
 Tower.prototype.repairClosestCreep = function () {
     const creep = this.findClosestNotFullHitsCreep()
-    if(creep){
+    if (creep) {
         this.repair(creep)
     }
 }
@@ -45,7 +53,7 @@ Tower.prototype.repairClosestCreep = function () {
 // 防御入侵者
 Tower.prototype.defence = function () {
     const hostile = this.findClosestHostileCreep()
-    if(hostile){
+    if (hostile) {
         this.attack(hostile)
     }
 }

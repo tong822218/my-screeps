@@ -3,7 +3,7 @@ var roleUpgrader = require('role.upgrader');
 var roleBuilder = require('role.builder');
 var roleAttack = require('role.attack');
 var clearMemory = require('helper.clear_memory');
-var Tower = require('tower');
+var Tower = require('Tower');
 
 module.exports.loop = function () {
 
@@ -26,16 +26,16 @@ module.exports.loop = function () {
     let upgraderList = _.filter(Game.creeps, (item) => item.memory.role == 'upgrader')
     let builderList = _.filter(Game.creeps, (item) => item.memory.role == 'builder')
 
-    if (attackList.length < 1) {
-        Game.spawns['Spawn1'].spawnCreep([ATTACK, WORK, CARRY, MOVE, MOVE], 'attack' + Game.time, {
-            memory: {
-                role: 'attack'
-            }
-        })
-    }
+    // if (attackList.length < 1) {
+    //     Game.spawns['Spawn1'].spawnCreep([ATTACK, WORK, CARRY, MOVE, MOVE], 'attack' + Game.time, {
+    //         memory: {
+    //             role: 'attack'
+    //         }
+    //     })
+    // }
 
-    if (harvestList.length < 2) {
-        Game.spawns['Spawn1'].spawnCreep([WORK, WORK, CARRY, MOVE], 'harvester' + Game.time, {
+    if (harvestList.length < 3) {
+        Game.spawns['Spawn1'].spawnCreep([WORK, WORK, CARRY,CARRY,CARRY, MOVE], 'harvester' + Game.time, {
             memory: {
                 role: 'harvester'
             }
@@ -48,7 +48,7 @@ module.exports.loop = function () {
             }
         })
     }
-    if (builderList.length < 1) {
+    if (builderList.length < 2) {
         Game.spawns['Spawn1'].spawnCreep([WORK, WORK, CARRY, MOVE], 'builder' + Game.time, {
             memory: {
                 role: 'builder'
@@ -68,7 +68,7 @@ module.exports.loop = function () {
             roleUpgrader.run(creep);
         }
         if (creep.memory.role == 'builder') {
-            roleHarvester.run(creep);
+            roleBuilder.run(creep);
         }
         if (creep.memory.role == 'attack') {
             roleAttack.run(creep)
