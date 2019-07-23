@@ -21,12 +21,12 @@ module.exports.loop = function () {
         }
     }
 
-    let attackList = _.filter(Game.creeps, (item) => item.memory.role == 'attack')
+    // let attackList = _.filter(Game.creeps, (item) => item.memory.role == 'attack')
     let harvestList = _.filter(Game.creeps, (item) => item.memory.role == 'harvester')
     let upgraderList = _.filter(Game.creeps, (item) => item.memory.role == 'upgrader')
     let builderList = _.filter(Game.creeps, (item) => item.memory.role == 'builder')
 
-    // if (attackList.length < 1) {
+    // if (attackList.lqwerength < 1) {
     //     Game.spawns['Spawn1'].spawnCreep([ATTACK, WORK, CARRY, MOVE, MOVE], 'attack' + Game.time, {
     //         memory: {
     //             role: 'attack'
