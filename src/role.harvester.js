@@ -3,7 +3,16 @@ var roleHarvester = {
     /** @param {Creep} creep **/
     run: function (creep) {
 
-        if (creep.carry.energy < creep.carryCapacity) { // 如果爬虫身上能量不满，就去获取能量
+        if(creep.memory.transporting && creep.carry.energy == 0) {
+            creep.memory.transporting = false;
+            creep.say('🔄 harvest');
+	    }
+	    if(!creep.memory.transporting && creep.carry.energy == creep.carryCapacity) {
+	        creep.memory.transporting = true;
+	        creep.say('⚡ transport');
+	    }
+
+        if (!creep.memory.transporting) { // 如果爬虫身上能量不满，就去获取能量
 
             const target = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
             if (target) {

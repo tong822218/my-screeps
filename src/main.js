@@ -10,10 +10,10 @@ module.exports.loop = function () {
     // 清理内存中死掉的creep
     clearMemory()
     // Tower 控制
-    const towers = Game.rooms['W3N29'].find(FIND_STRUCTURES,{
-        filter:(st)=> st.structureType == STRUCTURE_TOWER
+    const towers = Game.rooms['W3N29'].find(FIND_STRUCTURES, {
+        filter: (st) => st.structureType == STRUCTURE_TOWER
     })
-    if(towers.length > 0){
+    if (towers.length > 0) {
         for (let t in towers) {
             var tower = towers[t];
             const myTower = new Tower(tower)
@@ -34,22 +34,22 @@ module.exports.loop = function () {
     //     })
     // }
 
-    if (harvestList.length < 3) {
-        Game.spawns['Spawn1'].spawnCreep([WORK, WORK, CARRY,CARRY,CARRY, MOVE], 'harvester' + Game.time, {
+    if (harvestList.length < 2) {
+        Game.spawns['Spawn1'].spawnCreep([WORK, WORK, CARRY, CARRY, CARRY, MOVE,MOVE], 'harvester' + Game.time, {
             memory: {
                 role: 'harvester'
             }
         })
     }
-    if (upgraderList.length < 1) {
-        Game.spawns['Spawn1'].spawnCreep([WORK, WORK, CARRY, MOVE], 'upgrader' + Game.time, {
+    if (upgraderList.length < 2) {
+        Game.spawns['Spawn1'].spawnCreep([WORK, WORK, CARRY,CARRY,MOVE, MOVE], 'upgrader' + Game.time, {
             memory: {
                 role: 'upgrader'
             }
         })
     }
     if (builderList.length < 2) {
-        Game.spawns['Spawn1'].spawnCreep([WORK, WORK, CARRY, MOVE], 'builder' + Game.time, {
+        Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE], 'builder' + Game.time, {
             memory: {
                 role: 'builder'
             }
