@@ -1,5 +1,5 @@
 /**
- * creep创建工厂
+ * creep管理类
  */
 
 var CreepManage = {
