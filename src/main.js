@@ -2,8 +2,8 @@ var roleHarvester = require('role.harvester');
 var roleUpgrader = require('role.upgrader');
 var roleBuilder = require('role.builder');
 var roleAttack = require('role.attack');
-var clearMemory = require('helper.clear_memory');
-var Tower = require('Tower');
+var clearMemory = require('helper_clear_memory');
+var Tower = require('tower_Tower');
 
 module.exports.loop = function () {
 
@@ -17,7 +17,7 @@ module.exports.loop = function () {
         for (let t in towers) {
             var tower = towers[t];
             const myTower = new Tower(tower)
-            myTower.init()
+            myTower.start()
         }
     }
 
