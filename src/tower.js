@@ -5,11 +5,11 @@
 
 var Tower = function (tower) {
     
-    if(tower.energy < tower.energyCapacity / 2){
-        tower.memory.needEnergy = true
-    } else if(tower.energy == tower.energyCapacity){
-        tower.memory.needEnergy = false
-    }
+    // if(tower.energy < tower.energyCapacity / 2){
+    //     tower.memory.needEnergy = true
+    // } else if(tower.energy == tower.energyCapacity){
+    //     tower.memory.needEnergy = false
+    // }
 
     this.tower = tower
 
