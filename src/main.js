@@ -41,7 +41,7 @@ module.exports.loop = function () {
             }
         })
     }
-    if (upgraderList.length < 2) {
+    if (upgraderList.length < 3) {
         Game.spawns['Spawn1'].spawnCreep([WORK, WORK, CARRY,CARRY,MOVE, MOVE], 'upgrader' + Game.time, {
             memory: {
                 role: 'upgrader'

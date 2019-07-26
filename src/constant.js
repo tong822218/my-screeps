@@ -4,6 +4,7 @@ module.exports = {
     CREEP_TYPE_CARRY: 'carry',
     CREEP_TYPE_UPGRADER: 'upgrader',
     CREEP_TYPE_WORK: 'work',
+    CREEP_TYPE_BUILDER:'builder',
 
     // creep身体构造
     CREEP_BODY_HARVESTER: ['WORK', 'WORK', 'WORK', 'WORK', 'WORK', 'WORK', 'WORK', 'MOVE', 'MOVE'],
