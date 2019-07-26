@@ -5,7 +5,12 @@ var roleAttack = require('role.attack');
 var clearMemory = require('helper_clear_memory');
 var Tower = require('tower_Tower');
 
+// var Game = require('Game')
+
 module.exports.loop = function () {
+
+    // Game.start()
+    // return
 
     // 清理内存中死掉的creep
     clearMemory()
@@ -34,7 +39,7 @@ module.exports.loop = function () {
     //     })
     // }
 
-    if (harvestList.length < 5) {
+    if (harvestList.length < 3) {
         Game.spawns['Spawn1'].spawnCreep([WORK, WORK,CARRY,MOVE], 'harvester' + Game.time, {
             memory: {
                 role: 'harvester'
@@ -48,13 +53,13 @@ module.exports.loop = function () {
             }
         })
     }
-    // if (builderList.length < 2) {
-    //     Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE], 'builder' + Game.time, {
-    //         memory: {
-    //             role: 'builder'
-    //         }
-    //     })
-    // }
+    if (builderList.length < 1) {
+        Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE], 'builder' + Game.time, {
+            memory: {
+                role: 'builder'
+            }
+        })
+    }
 
 
     for (var name in Game.creeps) {
@@ -68,7 +73,7 @@ module.exports.loop = function () {
             roleUpgrader.run(creep);
         }
         if (creep.memory.role == 'builder') {
-            roleUpgrader.run(creep);
+            roleBuilder.run(creep);
         }
         if (creep.memory.role == 'attack') {
             roleAttack.run(creep)

@@ -2,8 +2,8 @@
  * 升级者
  * @param {creep} creep 
  */
-let Creep = require('Creep')
-let Constant = require('constants')
+let Creep = require('creep_Creep')
+let constant = require('constant')
 
 class Upgrader extends Creep {
 
@@ -12,16 +12,16 @@ class Upgrader extends Creep {
     }
 
     start() {
-        if (this.creep.memory.upgrading && creep.carry.energy == 0) {
-            creep.memory.upgrading = false;
-            creep.say('🔄 harvest');
+        if (this.creep.memory.upgrading && this.creep.carry.energy == 0) {
+            this.creep.memory.upgrading = false;
+            this.creep.say('🔄 harvest');
         }
-        if (!creep.memory.upgrading && creep.carry.energy == creep.carryCapacity) {
-            creep.memory.upgrading = true;
-            creep.say('⚡ upgrade');
+        if (!this.creep.memory.upgrading && this.creep.carry.energy == this.creep.carryCapacity) {
+            this.creep.memory.upgrading = true;
+            this.creep.say('⚡ upgrade');
         }
 
-        if (creep.memory.upgrading) {
+        if (this.creep.memory.upgrading) {
             this.upgrad()
         } else {
             this.withDraw()
@@ -30,7 +30,7 @@ class Upgrader extends Creep {
 
     // 从容器获取资源
     withDraw() {
-        const bottomContainer = Game.getObjectById(Constant.STRUCTURE_CONTAINER_BOTTOM_ID)
+        const bottomContainer = Game.getObjectById(constant.STRUCTURE_CONTAINER_BOTTOM_ID)
         if (this.creep.withdraw(bottomContainer, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
             this.moveTo(topContainer);
         }
@@ -38,8 +38,8 @@ class Upgrader extends Creep {
 
     // 开始升级控制器
     upgrad() {
-        if (creep.upgradeController(this.creep.room.controller) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(creep.room.controller, { visualizePathStyle: { stroke: '#ffffff' } });
+        if (this.creep.upgradeController(this.creep.room.controller) == ERR_NOT_IN_RANGE) {
+            this.creep.moveTo(this.creep.room.controller, { visualizePathStyle: { stroke: '#ffffff' } });
         }
     }
 }

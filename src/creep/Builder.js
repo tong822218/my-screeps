@@ -2,8 +2,7 @@
  * 建造者
  * @param {creep} creep 
  */
-let Creep = require('Creep')
-let Constant = require('constants')
+let Creep = require('creep_Creep')
 
 class Builder extends Creep {
 

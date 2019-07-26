@@ -2,7 +2,7 @@
  * 收割者的基类
  * @param {tower} tower 
  */
-let Creep = require('Creep')
+let Creep = require('creep_Creep')
 let constant = require('constant')
 
 class Harvester extends Creep {
@@ -18,6 +18,9 @@ class Harvester extends Creep {
         } else if(topContainer.store[RESOURCE_ENERGY] < topContainer.storeCapacity){
             const source = Game.getObjectById(constant.STRUCTURE_SOURCE_TOP_ID)
             this.harvest(source)
+            if(this.creep.carry > 0){
+                this.creep.drop(RESOURCE_ENERGY)
+            }
         } else{
             this.creep.saying('尿满了！')
         }

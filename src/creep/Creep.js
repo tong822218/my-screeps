@@ -13,15 +13,15 @@ class Creep {
     }
 
     /** 判断creep是否已经在目标位置 */
-    isInTargetPostion = function (target) {
+    isInTargetPostion(target) {
         return this.creep.pos.isEqualTo(target)
     }
 
-    getRole(){
+    getRole() {
         return this.creep.memory.role
     }
 
-    setRole(role){
+    setRole(role) {
         this.creep.memory.role = role
     }
 

@@ -4,12 +4,12 @@
  */
 
 class Tower {
-    constructor(tower){
+    constructor(tower) {
         this.tower = tower
     }
 
     start() {
-        // this.checkNeedEnergy() // 塔么有memory，没法用这个方式，有待改造
+        this.checkNeedEnergy() // 塔么有memory，没法用这个方式，有待改造
         this.repairClosestStructure()
         this.repairClosestCreep()
         this.defence()
@@ -61,13 +61,35 @@ class Tower {
     }
 
     // 检查一下塔是否需要补充能量
-    checkNeedEnergy(){
-        if(this.tower.energy > this.tower.energyCapacity / 2){
+    checkNeedEnergy() {
+        if (this.tower.energy > this.tower.energyCapacity / 2) {
             this.tower.memory.needEnergy = true
+            this.setMemory('needEnergy', true)
         }
-        if(this.tower.energy = this.tower.energyCapacity){
-            this.tower.memory.needEnergy = false
+        if (this.tower.energy == this.tower.energyCapacity) {
+            this.setMemory('needEnergy', false)
         }
+    }
+
+    getMemory() {
+        if (_.isUndefined(Memory.towers)) {
+            Memory.towers = {};
+        }
+        if (!_.isObject(Memory.towers)) {
+            return undefined;
+        }
+        return (Memory.towers[this.tower.id] = Memory.towers[this.tower.id] || {});
+
+    }
+    setMemory(key,value) { // 设置memory 
+        if (_.isUndefined(Memory.towers)) {
+            Memory.towers = {};
+        }
+        if (!_.isObject(Memory.towers)) {
+            throw new Error("Could not set room object " + this.tower.id + " memory");
+        }
+        Memory.towers[this.tower.id][key] = value;
+        this.tower.memory = Memory.towers[this.tower.id]
     }
 
 

@@ -2,15 +2,13 @@
  * 游戏总的调度对象
  */
 
-var Harvester = require('Harvester');
-var clearMemory = require('helper.clear_memory');
-var Tower = require('Tower');
-
-let towers = [] // 所有的塔对象
+var clearMemory = require('helper_clear_memory');
+var Tower = require('tower_Tower');
+var CreepManage = require('CreepManage')
 
 module.exports = {
     // 游戏初始化
-    init: function () {
+    start: function () {
 
         // 清理内存中死掉的creep
         clearMemory()
@@ -23,14 +21,12 @@ module.exports = {
             for (let t in towers) {
                 var tower = towers[t];
                 const myTower = new Tower(tower)
-                myTower.init()
-                towers.push(myTower)
+                myTower.start()
             }
         }
 
-        //
-
-
+        // 初始化creep
+        CreepManage.start()
 
     }
 }
