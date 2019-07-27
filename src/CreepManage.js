@@ -7,6 +7,8 @@ let Harvester = require('creep_Harvester')
 let Carry = require('creep_Carry')
 let Upgrader = require('creep_Upgrader')
 let Builder = require('creep_Builder')
+let Litter = require('creep_Litter')
+
 var CreepManage = {
 
   // 所有creep按类别存放
@@ -20,7 +22,8 @@ var CreepManage = {
     harvester: 1,
     carry: 1,
     builder: 1,
-    upgrader: 1
+    upgrader: 1,
+    litter: 2
   },
 
   // 初始化函数
@@ -45,10 +48,13 @@ var CreepManage = {
         topContainer.store[RESOURCE_ENERGY] < topContainer.storeCapacity) {
 
         // 如果能生產大的就生产打的，能量不够并且没有harvester了就生产小的临时用
-        if (this.spawnCreep('harvester' + Game.time, constant.CREEP_TYPE_HARVESTER, { dryRun: true })) {
+        if (this.spawnCreep('harvester' + Game.time, constant.CREEP_TYPE_HARVESTER, {
+            dryRun: true
+          })) {
           this.spawnCreep('harvester' + Game.time, constant.CREEP_TYPE_HARVESTER)
-        } else if (!this.creeps[constant.CREEP_TYPE_HARVESTER] || this.creeps[constant.CREEP_TYPE_HARVESTER].length == 0) {
-          this.spawnCreep('harvester' + Game.time, constant.CREEP_TYPE_LITTER)
+        } else if (!this.creeps[constant.CREEP_TYPE_HARVESTER] || 
+          this.creeps[constant.CREEP_TYPE_HARVESTER].length == 0) {
+            this.spawnLitter()
         }
       }
     }
@@ -56,13 +62,12 @@ var CreepManage = {
   spawnCarry() {
     if (!this.creeps[constant.CREEP_TYPE_CARRY] || this.creeps[constant.CREEP_TYPE_CARRY].length < this.maxAmount.carry) {
       // 如果能生產大的就生产打的，能量不够并且没有carry了就生产小的临时用
-      if (this.spawnCreep('carry' + Game.time, constant.CREEP_TYPE_CARRY, { dryRun: true })) {
-        console.log(11);
-
+      if (this.spawnCreep('carry' + Game.time, constant.CREEP_TYPE_CARRY, {
+          dryRun: true
+        })) {
         this.spawnCreep('carry' + Game.time, constant.CREEP_TYPE_CARRY)
       } else if (!this.creeps[constant.CREEP_TYPE_CARRY] || this.creeps[constant.CREEP_TYPE_CARRY].length == 0) {
-        console.log(22);
-        this.spawnCreep('carry' + Game.time, constant.CREEP_TYPE_LITTER)
+        this.spawnLitter()
       }
     }
 
@@ -82,6 +87,12 @@ var CreepManage = {
     }
   },
 
+  // 生产火种creep
+  spawnLitter(){
+    if(!this.creeps[constant.CREEP_TYPE_LITTER] || this.creeps[constant.CREEP_TYPE_LITTER].length < this.maxAmount.litter){
+      this.spawnCreep('litter' + Game.time, constant.CREEP_TYPE_LITTER)
+    }
+  },
 
   // 产卵
   spawnCreep(name, role, option) {
@@ -140,6 +151,9 @@ var CreepManage = {
       }
       if (creep.memory.role == constant.CREEP_TYPE_CARRY) {
         mycreep = new Carry(creep)
+      }
+      if (creep.memory.role == constant.CREEP_TYPE_LITTER) {
+        mycreep = new Litter(creep)
       }
       if (mycreep) {
         mycreep.start()

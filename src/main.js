@@ -38,7 +38,22 @@ module.exports.loop = function () {
     //         }
     //     })
     // }
-
+    
+    
+    if (builderList.length < 2) {
+        Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE], 'builder' + Game.time, {
+            memory: {
+                role: 'builder'
+            }
+        })
+    }
+    if (upgraderList.length < 1) {
+        Game.spawns['Spawn1'].spawnCreep([WORK, WORK, CARRY,CARRY,MOVE, MOVE], 'upgrader' + Game.time, {
+            memory: {
+                role: 'upgrader'
+            }
+        })
+    }
     if (harvestList.length < 3) {
         Game.spawns['Spawn1'].spawnCreep([WORK, WORK,CARRY,MOVE], 'harvester' + Game.time, {
             memory: {
@@ -46,21 +61,6 @@ module.exports.loop = function () {
             }
         })
     }
-    if (upgraderList.length < 3) {
-        Game.spawns['Spawn1'].spawnCreep([WORK, WORK, CARRY,CARRY,MOVE, MOVE], 'upgrader' + Game.time, {
-            memory: {
-                role: 'upgrader'
-            }
-        })
-    }
-    if (builderList.length < 1) {
-        Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE], 'builder' + Game.time, {
-            memory: {
-                role: 'builder'
-            }
-        })
-    }
-
 
     for (var name in Game.creeps) {
 

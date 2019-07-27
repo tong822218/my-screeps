@@ -36,7 +36,7 @@ var roleHarvester = {
                     return (structure.structureType == STRUCTURE_EXTENSION ||
                             structure.structureType == STRUCTURE_SPAWN ||
                             (structure.structureType == STRUCTURE_TOWER &&
-                                structure.energy < structure.energyCapacity / 2)) &&
+                                (structure.memory || structure.memory.needEnergy))) &&
                         structure.energy < structure.energyCapacity;
                 }
             });

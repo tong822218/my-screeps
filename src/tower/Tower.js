@@ -62,8 +62,10 @@ class Tower {
 
     // 检查一下塔是否需要补充能量
     checkNeedEnergy() {
-        if (this.tower.energy > this.tower.energyCapacity / 2) {
-            this.tower.memory.needEnergy = true
+        console.log(this.tower.energy , this.tower.energyCapacity);
+        console.log(this.tower.energy == this.tower.energyCapacity);
+        
+        if (this.tower.energy < this.tower.energyCapacity / 2) {
             this.setMemory('needEnergy', true)
         }
         if (this.tower.energy == this.tower.energyCapacity) {
@@ -88,8 +90,13 @@ class Tower {
         if (!_.isObject(Memory.towers)) {
             throw new Error("Could not set room object " + this.tower.id + " memory");
         }
+        if(_.isUndefined(Memory.towers[this.tower.id])){
+            Memory.towers[this.tower.id] = {}
+        }
+
         Memory.towers[this.tower.id][key] = value;
         this.tower.memory = Memory.towers[this.tower.id]
+        
     }
 
 
