@@ -16,10 +16,12 @@ class Upgrader extends Creep {
             this.creep.memory.upgrading = false;
             this.creep.say('🔄 harvest');
         }
-        if (!this.creep.memory.upgrading && this.creep.carry.energy == this.creep.carryCapacity) {
+        if (!this.creep.memory.upgrading && this.creep.carry.energy > 0) {
             this.creep.memory.upgrading = true;
             this.creep.say('⚡ upgrade');
         }
+
+
 
         if (this.creep.memory.upgrading) {
             this.upgrad()
@@ -31,8 +33,12 @@ class Upgrader extends Creep {
     // 从容器获取资源
     withDraw() {
         const bottomContainer = Game.getObjectById(constant.STRUCTURE_CONTAINER_BOTTOM_ID)
-        if (this.creep.withdraw(bottomContainer, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-            this.moveTo(topContainer);
+        if (!this.isInTargetPostion(bottomContainer)) {
+            this.moveTo(bottomContainer)
+        } else {
+            if (this.creep.withdraw(bottomContainer, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                this.moveTo(bottomContainer);
+            }
         }
     }
 

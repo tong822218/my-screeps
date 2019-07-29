@@ -20,7 +20,7 @@ class Builder extends Creep {
             this.creep.say('🚧 build');
         }
 
-        if (creep.memory.building) {
+        if (this.creep.memory.building) {
             this.build()
         } else {
             this.withDraw()
@@ -29,14 +29,14 @@ class Builder extends Creep {
 
     // 从容器获取资源
     withDraw() {
-        var container = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
+        var storage = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
             filter: (structure) => {
-                return structure.structureType == STRUCTURE_CONTAINER && structure.store[RESOURCE_ENERGY] > 0
+                return structure.structureType == STRUCTURE_STORAGE && structure.store[RESOURCE_ENERGY] > 0
             }
         });
 
-        if (container && creep.withdraw(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-            this.creep.moveTo(container, {
+        if (storage && this.creep.withdraw(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+            this.creep.moveTo(storage, {
                 visualizePathStyle: {
                     stroke: '#ffaa00'
                 }

@@ -40,6 +40,24 @@ class Carry extends Creep {
             return
         }
 
+        this.pickup() // 如果有调到地上的捡起来
+
+        // 如果spawn或者extension不满从最近的能量存储处获取能量
+        const spawnOrExtension = this.getNotFullEnergySpawnAndExtension()
+        if (spawnOrExtension.length > 0) {
+            let targ = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
+                filter: function (st) {
+                    return (st.structureType == STRUCTURE_CONTAINER ||
+                        st.structureType == STRUCTURE_STORAGE) &&
+                        st.store[RESOURCE_ENERGY] > 0
+                }
+            })
+            if (this.creep.withdraw(targ, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                this.creep.moveTo(targ);
+            }
+            return
+        }
+
         const topContainer = Game.getObjectById(constant.STRUCTURE_CONTAINER_TOP_ID)
         if (topContainer.store[RESOURCE_ENERGY] > 0) {
             if (this.creep.withdraw(topContainer, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
@@ -48,7 +66,7 @@ class Carry extends Creep {
             return
         }
 
-        var storage = Game.getObjectById(constant.STRUCTURE_STORAGE)
+        var storage = Game.getObjectById(constant.STRUCTURE_STORAGE_ID)
         if (storage) {
             if (this.creep.withdraw(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 this.creep.moveTo(storage);
@@ -60,25 +78,15 @@ class Carry extends Creep {
     /**
      * 将能量运输到目标
      */
-    transfer(target) {
-        // 传入了目标，就优先给目标输送能量
-        if (target) {
-            if (this.creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                this.creep.moveTo(targets[0], {
-                    visualizePathStyle: {
-                        stroke: '#ffffff'
-                    }
-                });
-            }
-            return
-        }
+    transfer() {
+        
         // spawn和extension不满，给它们先灌满
-        var targets = this.getNotFullEnergySpawnAndContainer()
+        var targets = this.getNotFullEnergySpawnAndExtension()
         if (targets.length > 0) {
             if (this.creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 this.creep.moveTo(targets[0], {
                     visualizePathStyle: {
-                        stroke: '#ffff00'
+                        stroke: '#ff0000'
                     }
                 });
             }
@@ -91,37 +99,33 @@ class Carry extends Creep {
             if (this.creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 this.creep.moveTo(targets[0], {
                     visualizePathStyle: {
-                        stroke: '#ffff00'
+                        stroke: '#ff0000'
                     }
                 });
             }
             return
         }
 
-        // spwan和extension，tower都满了，就放到container中（不包括最顶部的container）
-        var container = this.creep.room.find(FIND_STRUCTURES, {
-            filter: (structure) => {
-                return structure.structureType == STRUCTURE_CONTAINER &&
-                    structure.store[RESOURCE_ENERGY] < structure.storeCapacity &&
-                    structure.id != constant.STRUCTURE_CONTAINER_TOP_ID
-            }
-        });
-        if (container.length > 0) {
-            if (this.isInTargetPostion(container[0])) {
-                this.creep.drop(RESOURCE_ENERGY);
-            } else {
-                this.moveTo(container[0])
+        // spwan和extension，tower都满了，就放到container中（不包括最顶部的container,底部container小于1/4时再添加）
+        targets = this.getNeedEnergyContainer()
+        if (targets.length > 0) {
+            if (this.creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                this.creep.moveTo(targets[0], {
+                    visualizePathStyle: {
+                        stroke: '#ff0000'
+                    }
+                });
             }
             return
         }
 
         // 如果container也满了就放到storage
-        var storage = Game.getObjectById(constant.STRUCTURE_STORAGE)
-        if (storage) {
-            if (this.creep.transfer(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                this.creep.moveTo(storage, {
+        targets = this.getNeedEnergyStorage()
+        if (target) {
+            if (this.creep.transfer(targets, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                this.creep.moveTo(targets, {
                     visualizePathStyle: {
-                        stroke: '#ffff00'
+                        stroke: '#ff0000'
                     }
                 });
             }
@@ -144,8 +148,8 @@ class Carry extends Creep {
         }
     }
 
-    // 获取房间内不满血的建筑
-    getNotFullEnergySpawnAndContainer() {
+    // 获取房间内不满血的spawn 和 extension
+    getNotFullEnergySpawnAndExtension() {
         var targets = this.creep.room.find(FIND_STRUCTURES, {
             filter: (structure) => {
                 return (structure.structureType == STRUCTURE_EXTENSION ||
@@ -164,6 +168,34 @@ class Carry extends Creep {
             }
         });
         return targets
+    }
+
+    getNeedEnergyContainer(){
+        var container = this.creep.room.find(FIND_STRUCTURES, {
+            filter: (structure) => {
+                return (structure.structureType == STRUCTURE_CONTAINER &&
+                    structure.store[RESOURCE_ENERGY] < structure.storeCapacity &&
+                    structure.id != constant.STRUCTURE_CONTAINER_TOP_ID && 
+                    structure.id != constant.STRUCTURE_CONTAINER_BOTTOM_ID) || 
+                    (structure.id == constant.STRUCTURE_CONTAINER_BOTTOM_ID && 
+                        structure.store[RESOURCE_ENERGY] < structure.storeCapacity / 4)
+            }
+        });
+        return container
+    }
+
+    getNeedEnergyStorage(){
+        let strage = Game.getObjectById(constant.STRUCTURE_STORAGE_ID)
+        if(strage.store[RESOURCE_ENERGY] < strage.storeCapacity){
+            return strage
+        }
+        return null
+    }
+
+    hasNeedEnergyStructures(){
+        return (this.getNotFullEnergySpawnAndExtension().length > 0 || 
+                this.getNeedEnergyTower().length > 0 || 
+                this.getNeedEnergyContainer().length > 0)
     }
 
 }

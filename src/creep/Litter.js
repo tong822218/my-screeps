@@ -3,6 +3,7 @@
  * @param {creep} creep 
  */
 let Creep = require('creep_Creep')
+let constant = require('constant')
 
 class Litter extends Creep {
 
@@ -11,16 +12,30 @@ class Litter extends Creep {
     }
 
     start() {
-        if (creep.memory.transporting && creep.carry.energy == 0) {
-            creep.memory.transporting = false;
-            creep.say('🔄 harvest');
-        }
-        if (!creep.memory.transporting && creep.carry.energy == creep.carryCapacity) {
-            creep.memory.transporting = true;
-            creep.say('⚡ transport');
+        
+        // txtension spawn 满了直接自杀
+        var targets = this.creep.room.find(FIND_STRUCTURES, {
+            filter: (structure) => {
+                return (structure.structureType == STRUCTURE_EXTENSION ||
+                        structure.structureType == STRUCTURE_SPAWN) &&
+                    structure.energy < structure.energyCapacity;
+            }
+        });
+        if(targets.length <=0 ){
+            this.creep.moveTo(18,12)
+            return
         }
 
-        if (!creep.memory.transporting) { // 如果爬虫身上能量不满，就去获取能量
+        if (this.creep.memory.transporting && this.creep.carry.energy == 0) {
+            this.creep.memory.transporting = false;
+            this.creep.say('🔄 harvest');
+        }
+        if (!this.creep.memory.transporting && this.creep.carry.energy == this.creep.carryCapacity) {
+            this.creep.memory.transporting = true;
+            this.creep.say('⚡ transport');
+        }
+
+        if (!this.creep.memory.transporting) { // 如果爬虫身上能量不满，就去获取能量
             this.withDraw()
 
         } else {

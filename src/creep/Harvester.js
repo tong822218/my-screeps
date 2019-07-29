@@ -22,7 +22,7 @@ class Harvester extends Creep {
                 this.creep.drop(RESOURCE_ENERGY)
             }
         } else{
-            this.creep.saying('尿满了！')
+            this.creep.say('尿满了！')
         }
     }
 

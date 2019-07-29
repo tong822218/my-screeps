@@ -5,12 +5,12 @@ var roleAttack = require('role.attack');
 var clearMemory = require('helper_clear_memory');
 var Tower = require('tower_Tower');
 
-// var Game = require('Game')
+var GameManage = require('Game')
 
 module.exports.loop = function () {
 
-    // Game.start()
-    // return
+    GameManage.start()
+    return
 
     // 清理内存中死掉的creep
     clearMemory()

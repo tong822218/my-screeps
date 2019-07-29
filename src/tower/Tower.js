@@ -63,8 +63,6 @@ class Tower {
 
     // 检查一下塔是否需要补充能量
     checkNeedEnergy() {
-        console.log(this.tower.energy , this.tower.energyCapacity);
-        console.log(this.tower.energy == this.tower.energyCapacity);
         
         if (this.tower.energy < this.tower.energyCapacity / 2) {
             this.setMemory('needEnergy', true)

@@ -12,9 +12,7 @@ let Litter = require('creep_Litter')
 var CreepManage = {
 
   // 所有creep按类别存放
-  creeps: {
-
-  },
+  creeps: {},
   spawn: Game.spawns['Spawn1'],
   room: Game.rooms['W3N29'],
   // 当前需要的creep的数量
@@ -28,15 +26,16 @@ var CreepManage = {
 
   // 初始化函数
   start: function () {
+    this.creeps = {}
     this.classify() // creep初始化并分组
     this.startWorkStream()
   },
 
   // 开始工作流程
   startWorkStream() {
-    // this.spawnBuilder()
-    // this.spawnUpgrader()
-    // this.spawnHarvester()
+    this.spawnBuilder()
+    this.spawnUpgrader()
+    this.spawnHarvester()
     this.spawnCarry()
   },
 
@@ -48,7 +47,7 @@ var CreepManage = {
         topContainer.store[RESOURCE_ENERGY] < topContainer.storeCapacity) {
 
         // 如果能生產大的就生产打的，能量不够并且没有harvester了就生产小的临时用
-        if (this.spawnCreep('harvester' + Game.time, constant.CREEP_TYPE_HARVESTER, {
+        if (this.spawn.spawnCreep('harvester' + Game.time, constant.CREEP_TYPE_HARVESTER, {
             dryRun: true
           })) {
           this.spawnCreep('harvester' + Game.time, constant.CREEP_TYPE_HARVESTER)
@@ -60,11 +59,17 @@ var CreepManage = {
     }
   },
   spawnCarry() {
+    
     if (!this.creeps[constant.CREEP_TYPE_CARRY] || this.creeps[constant.CREEP_TYPE_CARRY].length < this.maxAmount.carry) {
       // 如果能生產大的就生产打的，能量不够并且没有carry了就生产小的临时用
-      if (this.spawnCreep('carry' + Game.time, constant.CREEP_TYPE_CARRY, {
+      console.log(this.spawnCreep('carry' + Game.time, constant.CREEP_TYPE_CARRY, {
+        dryRun: true
+      }));
+      
+      if (this.spawn.spawnCreep('carry' + Game.time, constant.CREEP_TYPE_CARRY, {
           dryRun: true
         })) {
+          
         this.spawnCreep('carry' + Game.time, constant.CREEP_TYPE_CARRY)
       } else if (!this.creeps[constant.CREEP_TYPE_CARRY] || this.creeps[constant.CREEP_TYPE_CARRY].length == 0) {
         this.spawnLitter()
@@ -98,17 +103,8 @@ var CreepManage = {
   spawnCreep(name, role, option) {
     option = option || {}
     let body = this.getBodyByRole(role)
-    console.log(body);
-
-    const a = this.spawn.spawnCreep(body, name || (role + Game.time), {
-      ...option,
-      memory: {
-        role: role
-      }
-    })
-    console.log(a);
-
-
+    let obj = {...option,memory:{role:role}}
+    this.spawn.spawnCreep(body, name || (role + Game.time), obj)
   },
 
   // 根据creep权限获取body
