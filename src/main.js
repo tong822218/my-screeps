@@ -40,7 +40,7 @@ module.exports.loop = function () {
     // }
     
     
-    if (builderList.length < 2) {
+    if (builderList.length < 0) {
         Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE], 'builder' + Game.time, {
             memory: {
                 role: 'builder'
@@ -55,7 +55,7 @@ module.exports.loop = function () {
         })
     }
     if (harvestList.length < 3) {
-        Game.spawns['Spawn1'].spawnCreep([WORK, WORK,CARRY,MOVE], 'harvester' + Game.time, {
+        Game.spawns['Spawn1'].spawnCreep([WORK, WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE], 'harvester' + Game.time, {
             memory: {
                 role: 'harvester'
             }

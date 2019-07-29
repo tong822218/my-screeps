@@ -72,7 +72,7 @@ class Carry extends Creep {
             }
             return
         }
-        // spawn和container不满，给它们先灌满
+        // spawn和extension不满，给它们先灌满
         var targets = this.getNotFullEnergySpawnAndContainer()
         if (targets.length > 0) {
             if (this.creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
@@ -86,7 +86,7 @@ class Carry extends Creep {
         }
 
         // 检查塔是否需要能量
-        targets = this.getNotFullEnergyTower()
+        targets = this.getNeedEnergyTower()
         if (targets.length > 0) {
             if (this.creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 this.creep.moveTo(targets[0], {
@@ -156,7 +156,7 @@ class Carry extends Creep {
         return targets
     }
 
-    getNotFullEnergyTower() {
+    getNeedEnergyTower() {
         var targets = this.creep.room.find(FIND_STRUCTURES, {
             filter: (structure) => {
                 return (structure.structureType == STRUCTURE_TOWER &&
