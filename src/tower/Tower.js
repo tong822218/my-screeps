@@ -6,6 +6,7 @@
 class Tower {
     constructor(tower) {
         this.tower = tower
+        this.tower.memory = this.getMemory()
     }
 
     start() {
