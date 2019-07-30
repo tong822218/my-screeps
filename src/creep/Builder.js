@@ -64,8 +64,19 @@ class Builder extends Creep {
                     }
                 });
             }
+            return
         }
+
+        targets = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
+            filter: function (st) {
+                return st.structureType == STRUCTURE_WALL && st.hits < 100000
+            }
+
+        })
+        if(targets.length > 0){
+            this.creep.repair(targets[0])
+        }
+
     }
 }
-
 module.exports = Builder;

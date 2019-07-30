@@ -121,7 +121,7 @@ class Carry extends Creep {
 
         // 如果container也满了就放到storage
         targets = this.getNeedEnergyStorage()
-        if (target) {
+        if (targets) {
             if (this.creep.transfer(targets, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 this.creep.moveTo(targets, {
                     visualizePathStyle: {

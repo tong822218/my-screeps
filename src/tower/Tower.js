@@ -26,7 +26,9 @@ class Tower {
     }
     findClosestNotFullHitsStructures() {
         return this.tower.pos.findClosestByRange(FIND_STRUCTURES, {
-            filter: (structure) => structure.hits < structure.hitsMax && structure.structureType != STRUCTURE_WALL
+            filter: (structure) => (structure.structureType == STRUCTURE_WALL &&
+                structure.hits < 10000) || (structure.structureType != STRUCTURE_WALL &&
+                structure.hits < structure.hitsMax)
         });
     }
     // 找到最近的受伤creep
@@ -63,7 +65,7 @@ class Tower {
 
     // 检查一下塔是否需要补充能量
     checkNeedEnergy() {
-        
+
         if (this.tower.energy < this.tower.energyCapacity / 2) {
             this.setMemory('needEnergy', true)
         }
@@ -82,20 +84,20 @@ class Tower {
         return (Memory.towers[this.tower.id] = Memory.towers[this.tower.id] || {});
 
     }
-    setMemory(key,value) { // 设置memory 
+    setMemory(key, value) { // 设置memory 
         if (_.isUndefined(Memory.towers)) {
             Memory.towers = {};
         }
         if (!_.isObject(Memory.towers)) {
             throw new Error("Could not set room object " + this.tower.id + " memory");
         }
-        if(_.isUndefined(Memory.towers[this.tower.id])){
+        if (_.isUndefined(Memory.towers[this.tower.id])) {
             Memory.towers[this.tower.id] = {}
         }
 
         Memory.towers[this.tower.id][key] = value;
         this.tower.memory = Memory.towers[this.tower.id]
-        
+
     }
 
 
