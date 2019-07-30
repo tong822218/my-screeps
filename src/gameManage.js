@@ -5,6 +5,7 @@
 var clearMemory = require('helper_clear_memory');
 var Tower = require('tower_Tower');
 var CreepManage = require('CreepManage')
+var taskQueue = require('carryTaskQueue')
 
 module.exports = {
     // 游戏初始化
@@ -24,6 +25,9 @@ module.exports = {
                 myTower.start()
             }
         }
+
+        // carry任务队列初始化
+        taskQueue.start()
 
         // 初始化creep
         CreepManage.start()

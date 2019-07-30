@@ -13,7 +13,7 @@ class Litter extends Creep {
 
     start() {
         
-        // txtension spawn 满了直接自杀
+        // txtension spawn 满了直接到固定点等候
         var targets = this.creep.room.find(FIND_STRUCTURES, {
             filter: (structure) => {
                 return (structure.structureType == STRUCTURE_EXTENSION ||

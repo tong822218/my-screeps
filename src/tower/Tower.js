@@ -24,6 +24,7 @@ class Tower {
     findClosestHostileCreep() {
         return this.tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
     }
+    // 找到最近的不满血建筑
     findClosestNotFullHitsStructures() {
         return this.tower.pos.findClosestByRange(FIND_STRUCTURES, {
             filter: (structure) => (structure.structureType == STRUCTURE_WALL &&

@@ -30,17 +30,11 @@ class Carry extends Creep {
     }
 
     /**
-     * 从目标处获取资源没有目标就从顶部container中获取
+     * 从容器中获取能量
      */
-    withDraw(target) {
-        if (target) {
-            if (this.creep.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                this.creep.moveTo(target);
-            }
-            return
-        }
+    withDraw() {
 
-        this.pickup() // 如果有调到地上的捡起来
+        this.pickup() // 如果附近地上有能量就捡起来
 
         // 如果spawn或者extension不满从最近的能量存储处获取能量
         const spawnOrExtension = this.getNotFullEnergySpawnAndExtension()
@@ -66,12 +60,12 @@ class Carry extends Creep {
             return
         }
 
-        var storage = Game.getObjectById(constant.STRUCTURE_STORAGE_ID)
-        if (storage) {
-            if (this.creep.withdraw(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                this.creep.moveTo(storage);
-            }
-        }
+        // var storage = Game.getObjectById(constant.STRUCTURE_STORAGE_ID)
+        // if (storage) {
+        //     if (this.creep.withdraw(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+        //         this.creep.moveTo(storage);
+        //     }
+        // }
 
     }
 
@@ -178,7 +172,7 @@ class Carry extends Creep {
                     structure.id != constant.STRUCTURE_CONTAINER_TOP_ID && 
                     structure.id != constant.STRUCTURE_CONTAINER_BOTTOM_ID) || 
                     (structure.id == constant.STRUCTURE_CONTAINER_BOTTOM_ID && 
-                        structure.store[RESOURCE_ENERGY] < structure.storeCapacity / 4)
+                        structure.store[RESOURCE_ENERGY] < structure.storeCapacity / 5)
             }
         });
         return container

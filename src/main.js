@@ -1,82 +1,9 @@
 var roleHarvester = require('role.harvester');
 var roleUpgrader = require('role.upgrader');
-var roleBuilder = require('role.builder');
-var roleAttack = require('role.attack');
-var clearMemory = require('helper_clear_memory');
-var Tower = require('tower_Tower');
-
-var GameManage = require('Game')
+var GameManage = require('gameManage')
 
 module.exports.loop = function () {
-
+    
     GameManage.start()
-    return
 
-    // 清理内存中死掉的creep
-    clearMemory()
-    // Tower 控制
-    const towers = Game.rooms['W3N29'].find(FIND_STRUCTURES, {
-        filter: (st) => st.structureType == STRUCTURE_TOWER
-    })
-    if (towers.length > 0) {
-        for (let t in towers) {
-            var tower = towers[t];
-            const myTower = new Tower(tower)
-            myTower.start()
-        }
-    }
-
-    // let attackList = _.filter(Game.creeps, (item) => item.memory.role == 'attack')
-    let harvestList = _.filter(Game.creeps, (item) => item.memory.role == 'harvester')
-    let upgraderList = _.filter(Game.creeps, (item) => item.memory.role == 'upgrader')
-    let builderList = _.filter(Game.creeps, (item) => item.memory.role == 'builder')
-
-    // if (attackList.lqwerength < 1) {
-    //     Game.spawns['Spawn1'].spawnCreep([ATTACK, WORK, CARRY, MOVE, MOVE], 'attack' + Game.time, {
-    //         memory: {
-    //             role: 'attack'
-    //         }
-    //     })
-    // }
-    
-    
-    if (builderList.length < 0) {
-        Game.spawns['Spawn1'].spawnCreep([WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE], 'builder' + Game.time, {
-            memory: {
-                role: 'builder'
-            }
-        })
-    }
-    if (upgraderList.length < 1) {
-        Game.spawns['Spawn1'].spawnCreep([WORK, WORK, CARRY,CARRY,MOVE, MOVE], 'upgrader' + Game.time, {
-            memory: {
-                role: 'upgrader'
-            }
-        })
-    }
-    if (harvestList.length < 3) {
-        Game.spawns['Spawn1'].spawnCreep([WORK, WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE], 'harvester' + Game.time, {
-            memory: {
-                role: 'harvester'
-            }
-        })
-    }
-
-    for (var name in Game.creeps) {
-
-        var creep = Game.creeps[name];
-
-        if (creep.memory.role == 'harvester') {
-            roleHarvester.run(creep);
-        }
-        if (creep.memory.role == 'upgrader') {
-            roleUpgrader.run(creep);
-        }
-        if (creep.memory.role == 'builder') {
-            roleBuilder.run(creep);
-        }
-        if (creep.memory.role == 'attack') {
-            roleAttack.run(creep)
-        }
-    }
 }
