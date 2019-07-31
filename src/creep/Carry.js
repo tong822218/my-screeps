@@ -42,7 +42,7 @@ class Carry extends Creep {
             let targ = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: function (st) {
                     return (st.structureType == STRUCTURE_CONTAINER ||
-                        st.structureType == STRUCTURE_STORAGE) &&
+                            st.structureType == STRUCTURE_STORAGE) &&
                         st.store[RESOURCE_ENERGY] > 0
                 }
             })
@@ -73,7 +73,7 @@ class Carry extends Creep {
      * 将能量运输到目标
      */
     transfer() {
-        
+
         // spawn和extension不满，给它们先灌满
         var targets = this.getNotFullEnergySpawnAndExtension()
         if (targets.length > 0) {
@@ -100,18 +100,35 @@ class Carry extends Creep {
             return
         }
 
-        // spwan和extension，tower都满了，就放到container中（不包括最顶部的container,底部container小于1/4时再添加）
-        targets = this.getNeedEnergyContainer()
-        if (targets.length > 0) {
-            if (this.creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                this.creep.moveTo(targets[0], {
-                    visualizePathStyle: {
-                        stroke: '#ff0000'
-                    }
-                });
+        /**
+         *  spwan和extension，tower都满了，就放到container中（
+         *  不包括最顶部的container,底部container小于1/5时再添加,从carryTaskQueue中取任务）
+         * */
+        for (const id in Memory.taskQueue) {
+            const memory = Memory.taskQueue[id];
+            if (memory.needEnergy) {
+                const container = Game.getObjectById(id)
+                if(this.creep.transfer(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    this.creep.moveTo(container, {
+                        visualizePathStyle: {
+                            stroke: '#ff0000'
+                        }
+                    });
+                }
+                return
             }
-            return
         }
+        // targets = this.getNeedEnergyContainer()
+        // if (targets.length > 0) {
+        //     if (this.creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+        //         this.creep.moveTo(targets[0], {
+        //             visualizePathStyle: {
+        //                 stroke: '#ff0000'
+        //             }
+        //         });
+        //     }
+        //     return
+        // }
 
         // 如果container也满了就放到storage
         targets = this.getNeedEnergyStorage()
@@ -147,7 +164,7 @@ class Carry extends Creep {
         var targets = this.creep.room.find(FIND_STRUCTURES, {
             filter: (structure) => {
                 return (structure.structureType == STRUCTURE_EXTENSION ||
-                    structure.structureType == STRUCTURE_SPAWN) &&
+                        structure.structureType == STRUCTURE_SPAWN) &&
                     structure.energy < structure.energyCapacity;
             }
         });
@@ -164,32 +181,32 @@ class Carry extends Creep {
         return targets
     }
 
-    getNeedEnergyContainer(){
+    getNeedEnergyContainer() {
         var container = this.creep.room.find(FIND_STRUCTURES, {
             filter: (structure) => {
                 return (structure.structureType == STRUCTURE_CONTAINER &&
-                    structure.store[RESOURCE_ENERGY] < structure.storeCapacity &&
-                    structure.id != constant.STRUCTURE_CONTAINER_TOP_ID && 
-                    structure.id != constant.STRUCTURE_CONTAINER_BOTTOM_ID) || 
-                    (structure.id == constant.STRUCTURE_CONTAINER_BOTTOM_ID && 
+                        structure.store[RESOURCE_ENERGY] < structure.storeCapacity &&
+                        structure.id != constant.STRUCTURE_CONTAINER_TOP_ID &&
+                        structure.id != constant.STRUCTURE_CONTAINER_BOTTOM_ID) ||
+                    (structure.id == constant.STRUCTURE_CONTAINER_BOTTOM_ID &&
                         structure.store[RESOURCE_ENERGY] < structure.storeCapacity / 5)
             }
         });
         return container
     }
 
-    getNeedEnergyStorage(){
+    getNeedEnergyStorage() {
         let strage = Game.getObjectById(constant.STRUCTURE_STORAGE_ID)
-        if(strage.store[RESOURCE_ENERGY] < strage.storeCapacity){
+        if (strage.store[RESOURCE_ENERGY] < strage.storeCapacity) {
             return strage
         }
         return null
     }
 
-    hasNeedEnergyStructures(){
-        return (this.getNotFullEnergySpawnAndExtension().length > 0 || 
-                this.getNeedEnergyTower().length > 0 || 
-                this.getNeedEnergyContainer().length > 0)
+    hasNeedEnergyStructures() {
+        return (this.getNotFullEnergySpawnAndExtension().length > 0 ||
+            this.getNeedEnergyTower().length > 0 ||
+            this.getNeedEnergyContainer().length > 0)
     }
 
 }

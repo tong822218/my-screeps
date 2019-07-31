@@ -7,14 +7,17 @@ module.exports = {
   start() {
     let containers = Game.rooms[constant.ROOM1].find(FIND_STRUCTURES, {
       filter: (st) => {
-        return st.structureType == STRUCTURE_CONTAINER
+        return st.structureType == STRUCTURE_CONTAINER && st.id!=constant.STRUCTURE_CONTAINER_TOP_ID
       }
     })
 
     containers.forEach(con => {
       const memoryTask = this.getTask(con.id)
-      if (memoryTask.needEnergy && con.store[RESOURCE_ENERGY] == structure.storeCapacity) {
-        memoryTask.needEnergy = false
+      if (memoryTask.needEnergy && con.store[RESOURCE_ENERGY] == con.storeCapacity) {
+        this.removeTask(con.id)
+      }
+      if(!memoryTask.needEnergy && con.store[RESOURCE_ENERGY] < con.storeCapacity / 5){
+        this.addTask(con.id)
       }
 
     });
