@@ -14,7 +14,7 @@ var CreepManage = {
   // 所有creep按类别存放
   creeps: {},
   spawn: Game.spawns['Spawn1'],
-  room: Game.rooms['W3N29'],
+  room: Game.rooms[constant.ROOM1],
   // 当前需要的creep的数量
   maxAmount: {
     harvester: 1,

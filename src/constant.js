@@ -1,4 +1,5 @@
 module.exports = {
+    ROOM1:'W3N29',
     // creep 类型
     CREEP_TYPE_HARVESTER: 'harvester',
     CREEP_TYPE_CARRY: 'carry',

@@ -1,11 +1,11 @@
 /**
  * carry的任务队列，从这个队列中取出需要输送能量的单位
  */
-
+let constant = require('constant')
 module.exports = {
 
-  start(room) {
-    let containers = Game.rooms[room].find(FIND_STRUCTURES, {
+  start() {
+    let containers = Game.rooms[constant.ROOM1].find(FIND_STRUCTURES, {
       filter: (st) => {
         return st.structureType == STRUCTURE_CONTAINER
       }

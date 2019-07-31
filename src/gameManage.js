@@ -27,7 +27,7 @@ module.exports = {
         }
 
         // carry任务队列初始化
-        taskQueue.start()
+        // taskQueue.start()
 
         // 初始化creep
         CreepManage.start()
