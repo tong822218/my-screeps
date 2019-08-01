@@ -10,11 +10,12 @@ module.exports = {
         return st.structureType == STRUCTURE_CONTAINER && st.id!=constant.STRUCTURE_CONTAINER_TOP_ID
       }
     })
-
+    const _this = this
     containers.forEach(con => {
       const memoryTask = this.getTask(con.id)
       if (memoryTask.needEnergy && con.store[RESOURCE_ENERGY] == con.storeCapacity) {
-        this.removeTask(con.id)
+        _this.removeTask(con.id)
+        
       }
       if(!memoryTask.needEnergy && con.store[RESOURCE_ENERGY] < con.storeCapacity / 5){
         this.addTask(con.id)
@@ -53,7 +54,7 @@ module.exports = {
     if (!_.isObject(Memory.taskQueue)) {
       throw new Error("Could not set room object " + this.tower.id + " memory");
     }
-    if(Memory.taskQueue.id){
+    if(Memory.taskQueue[id]){
       delete Memory.taskQueue[id];
     }
   }
