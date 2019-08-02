@@ -47,29 +47,25 @@ var CreepManage = {
         topContainer.store[RESOURCE_ENERGY] < topContainer.storeCapacity) {
 
         // 如果能生產大的就生产打的，能量不够并且没有harvester了就生产小的临时用
-        if (this.spawn.spawnCreep('harvester' + Game.time, constant.CREEP_TYPE_HARVESTER, {
+        if (this.spawn.spawnCreep(constant.CREEP_BODY_HARVESTER, 'harvester' + Game.time, {
             dryRun: true
-          })) {
+          })==0) {
           this.spawnCreep('harvester' + Game.time, constant.CREEP_TYPE_HARVESTER)
-        } else if (!this.creeps[constant.CREEP_TYPE_HARVESTER] || 
+        } else if (!this.creeps[constant.CREEP_TYPE_HARVESTER] ||
           this.creeps[constant.CREEP_TYPE_HARVESTER].length == 0) {
-            this.spawnLitter()
+          this.spawnLitter()
         }
       }
     }
   },
   spawnCarry() {
-    
+
     if (!this.creeps[constant.CREEP_TYPE_CARRY] || this.creeps[constant.CREEP_TYPE_CARRY].length < this.maxAmount.carry) {
       // 如果能生產大的就生产打的，能量不够并且没有carry了就生产小的临时用
-      console.log(this.spawnCreep('carry' + Game.time, constant.CREEP_TYPE_CARRY, {
-        dryRun: true
-      }));
-      
-      if (this.spawn.spawnCreep('carry' + Game.time, constant.CREEP_TYPE_CARRY, {
+     
+      if (this.spawn.spawnCreep(constant.CREEP_BODY_CARRY, 'carry' + Game.time, {
           dryRun: true
-        })) {
-          
+        })==0) {
         this.spawnCreep('carry' + Game.time, constant.CREEP_TYPE_CARRY)
       } else if (!this.creeps[constant.CREEP_TYPE_CARRY] || this.creeps[constant.CREEP_TYPE_CARRY].length == 0) {
         this.spawnLitter()
@@ -93,17 +89,24 @@ var CreepManage = {
   },
 
   // 生产火种creep
-  spawnLitter(){
-    if(!this.creeps[constant.CREEP_TYPE_LITTER] || this.creeps[constant.CREEP_TYPE_LITTER].length < this.maxAmount.litter){
+  spawnLitter() {
+    if (!this.creeps[constant.CREEP_TYPE_LITTER] || this.creeps[constant.CREEP_TYPE_LITTER].length < this.maxAmount.litter) {
       this.spawnCreep('litter' + Game.time, constant.CREEP_TYPE_LITTER)
     }
   },
 
   // 产卵
   spawnCreep(name, role, option) {
+
     option = option || {}
     let body = this.getBodyByRole(role)
-    let obj = {...option,memory:{role:role}}
+
+    let obj = {
+      ...option,
+      memory: {
+        role: role
+      }
+    }
     this.spawn.spawnCreep(body, name || (role + Game.time), obj)
   },
 
