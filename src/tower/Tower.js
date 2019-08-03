@@ -70,7 +70,7 @@ class Tower {
         if (this.tower.energy < this.tower.energyCapacity / 2) {
             this.setMemory('needEnergy', true)
         }
-        if (this.tower.energy == this.tower.energyCapacity) {
+        if (this.tower.energy >= this.tower.energyCapacity/5 * 4) {
             this.setMemory('needEnergy', false)
         }
     }
