@@ -7,7 +7,7 @@ module.exports = {
   start() {
     let containers = Game.rooms[constant.ROOM1].find(FIND_STRUCTURES, {
       filter: (st) => {
-        return st.structureType == STRUCTURE_CONTAINER && st.id!=constant.STRUCTURE_CONTAINER_TOP_ID
+        return st.structureType == STRUCTURE_CONTAINER && st.pos.x!=constant.STRUCTURE_CONTAINER_TOP_POSITION[0]
       }
     })
     const _this = this

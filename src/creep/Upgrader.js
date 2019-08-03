@@ -4,6 +4,7 @@
  */
 let Creep = require('creep_Creep')
 let constant = require('constant')
+let find = require('helper_find')
 
 class Upgrader extends Creep {
 
@@ -32,7 +33,8 @@ class Upgrader extends Creep {
 
     // 从容器获取资源
     withDraw() {
-        const bottomContainer = Game.getObjectById(constant.STRUCTURE_CONTAINER_BOTTOM_ID)
+        const bottomContainer = find.bottomContainer(constant.ROOM1)
+        if(!bottomContainer) return
         if (!this.isInTargetPostion(bottomContainer)) {
             this.moveTo(bottomContainer)
         } else {

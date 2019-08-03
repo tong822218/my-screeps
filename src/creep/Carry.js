@@ -5,6 +5,7 @@
 
 let Creep = require('creep_Creep')
 let constant = require('constant')
+let find = require('helper_find')
 
 class Carry extends Creep {
     constructor(creep) {
@@ -52,8 +53,8 @@ class Carry extends Creep {
             return
         }
 
-        const topContainer = Game.getObjectById(constant.STRUCTURE_CONTAINER_TOP_ID)
-        if (topContainer.store[RESOURCE_ENERGY] > 0) {
+        const topContainer = find.topContainer(constant.ROOM1)
+        if (topContainer && topContainer.store[RESOURCE_ENERGY] > 0) {
             if (this.creep.withdraw(topContainer, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 this.creep.moveTo(topContainer);
             }
@@ -186,9 +187,9 @@ class Carry extends Creep {
             filter: (structure) => {
                 return (structure.structureType == STRUCTURE_CONTAINER &&
                         structure.store[RESOURCE_ENERGY] < structure.storeCapacity &&
-                        structure.id != constant.STRUCTURE_CONTAINER_TOP_ID &&
-                        structure.id != constant.STRUCTURE_CONTAINER_BOTTOM_ID) ||
-                    (structure.id == constant.STRUCTURE_CONTAINER_BOTTOM_ID &&
+                        structure.pos.x != constant.STRUCTURE_CONTAINER_TOP_POSITION[0] &&
+                        structure.pos.x != constant.STRUCTURE_CONTAINER_BOTTOM_POSITION[0]) ||
+                    (structure.pos.x == constant.STRUCTURE_CONTAINER_BOTTOM_POSITION[0] &&
                         structure.store[RESOURCE_ENERGY] < structure.storeCapacity / 5)
             }
         });

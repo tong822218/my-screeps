@@ -2,6 +2,7 @@
  * creep管理类
  */
 let constant = require('constant')
+let find = require('helper_find')
 
 let Harvester = require('creep_Harvester')
 let Carry = require('creep_Carry')
@@ -19,7 +20,7 @@ var CreepManage = {
   maxAmount: {
     harvester: 1,
     carry: 1,
-    builder: 1,
+    builder: 2,
     upgrader: 1,
     litter: 2
   },
@@ -27,6 +28,7 @@ var CreepManage = {
   // 初始化函数
   start: function () {
     this.creeps = {}
+    console.log(JSON.stringify(this.creeps))
     this.classify() // creep初始化并分组
     this.startWorkStream()
   },
@@ -42,8 +44,9 @@ var CreepManage = {
   spawnHarvester() {
     if (!this.creeps[constant.CREEP_TYPE_HARVESTER] || this.creeps[constant.CREEP_TYPE_HARVESTER].length < this.maxAmount.harvester) {
       const source = Game.getObjectById(constant.STRUCTURE_SOURCE_TOP_ID)
-      const topContainer = Game.getObjectById(constant.STRUCTURE_CONTAINER_TOP_ID)
-      if (source.energy > 0 &&
+      const topContainer = find.topContainer(constant.ROOM1)
+      
+      if (source.energy > 0 && topContainer && 
         topContainer.store[RESOURCE_ENERGY] < topContainer.storeCapacity) {
 
         // 如果能生產大的就生产打的，能量不够并且没有harvester了就生产小的临时用
@@ -59,9 +62,11 @@ var CreepManage = {
     }
   },
   spawnCarry() {
-
+    // console.log(JSON.stringify(this.creeps.carry));
+    
     if (!this.creeps[constant.CREEP_TYPE_CARRY] || this.creeps[constant.CREEP_TYPE_CARRY].length < this.maxAmount.carry) {
       // 如果能生產大的就生产打的，能量不够并且没有carry了就生产小的临时用
+     console.log(1);
      
       if (this.spawn.spawnCreep(constant.CREEP_BODY_CARRY, 'carry' + Game.time, {
           dryRun: true
@@ -137,6 +142,8 @@ var CreepManage = {
   // 将creep分类存放到数组
   classify() {
     for (var name in Game.creeps) {
+      console.log(name);
+      
       var creep = Game.creeps[name];
       let mycreep
       if (creep.memory.role == constant.CREEP_TYPE_HARVESTER) {

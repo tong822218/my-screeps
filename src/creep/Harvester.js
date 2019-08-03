@@ -4,30 +4,32 @@
  */
 let Creep = require('creep_Creep')
 let constant = require('constant')
+let find = require('helper_find')
 
 class Harvester extends Creep {
 
-    constructor(creep){
+    constructor(creep) {
         super(creep)
     }
-    
-    start(){
-       const topContainer = Game.getObjectById(constant.STRUCTURE_CONTAINER_TOP_ID)
-        if(!this.isInTargetPostion(topContainer)){
+
+    start() {
+        const topContainer = find.topContainer(constant.ROOM1)
+        if (!topContainer) return
+        if (!this.isInTargetPostion(topContainer)) {
             this.moveTo(topContainer)
-        } else if(topContainer.store[RESOURCE_ENERGY] < topContainer.storeCapacity){
+        } else if (topContainer.store[RESOURCE_ENERGY] < topContainer.storeCapacity) {
             const source = Game.getObjectById(constant.STRUCTURE_SOURCE_TOP_ID)
             this.harvest(source)
-            if(this.creep.carry > 0){
+            if (this.creep.carry > 0) {
                 this.creep.drop(RESOURCE_ENERGY)
             }
-        } else{
+        } else {
             this.creep.say('尿满了！')
         }
     }
 
     // 开始收割资源
-    harvest (source){
+    harvest(source) {
         this.creep.harvest(source)
     }
 }

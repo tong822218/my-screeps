@@ -113,7 +113,7 @@ class Litter extends Creep {
             filter: (structure) => {
                 return structure.structureType == STRUCTURE_CONTAINER &&
                     structure.store[RESOURCE_ENERGY] < structure.storeCapacity &&
-                    structure.id != constant.STRUCTURE_CONTAINER_TOP_ID
+                    structure.pos.x != constant.STRUCTURE_CONTAINER_TOP_POSITION[0]
             }
         });
         if (container.length > 0) {
