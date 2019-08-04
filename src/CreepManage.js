@@ -20,7 +20,7 @@ var CreepManage = {
   maxAmount: {
     harvester: 1,
     carry: 1,
-    builder: 2,
+    builder: 1,
     upgrader: 1,
     litter: 2
   },
