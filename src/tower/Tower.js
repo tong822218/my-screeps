@@ -27,9 +27,9 @@ class Tower {
     // 找到最近的不满血建筑
     findClosestNotFullHitsStructures() {
         return this.tower.pos.findClosestByRange(FIND_STRUCTURES, {
-            filter: (structure) => (structure.structureType == STRUCTURE_WALL &&
-                structure.hits < 10000) || (structure.structureType != STRUCTURE_WALL &&
-                structure.hits < structure.hitsMax)
+            filter: (structure) => (structure.structureType == STRUCTURE_WALL && structure.hits < 100000) ||
+                (structure.structureType == STRUCTURE_RAMPART && structure.hits < 2500000) ||
+                (structure.structureType != STRUCTURE_WALL && structure.structureType != STRUCTURE_RAMPART && structure.hits < structure.hitsMax)
         });
     }
     // 找到最近的受伤creep
@@ -70,7 +70,7 @@ class Tower {
         if (this.tower.energy < this.tower.energyCapacity / 2) {
             this.setMemory('needEnergy', true)
         }
-        if (this.tower.energy >= this.tower.energyCapacity/5 * 4) {
+        if (this.tower.energy >= this.tower.energyCapacity / 5 * 4) {
             this.setMemory('needEnergy', false)
         }
     }
