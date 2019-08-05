@@ -39,7 +39,7 @@ class Carry extends Creep {
 
         // 如果spawn或者extension不满从最近的能量存储处获取能量
         const spawnOrExtension = this.getNotFullEnergySpawnAndExtension()
-        if (spawnOrExtension.length > 0) {
+        if (spawnOrExtension) {
             let targ = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: function (st) {
                     return (st.structureType == STRUCTURE_CONTAINER ||
@@ -77,9 +77,9 @@ class Carry extends Creep {
 
         // spawn和extension不满，给它们先灌满
         var targets = this.getNotFullEnergySpawnAndExtension()
-        if (targets.length > 0) {
-            if (this.creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                this.creep.moveTo(targets[0], {
+        if (targets) {
+            if (this.creep.transfer(targets, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                this.creep.moveTo(targets, {
                     visualizePathStyle: {
                         stroke: '#ff0000'
                     }
@@ -162,13 +162,15 @@ class Carry extends Creep {
 
     // 获取房间内不满血的spawn 和 extension
     getNotFullEnergySpawnAndExtension() {
-        var targets = this.creep.room.find(FIND_STRUCTURES, {
+        var targets = this.creep.pos.findClosestByRange(FIND_STRUCTURES, {
             filter: (structure) => {
                 return (structure.structureType == STRUCTURE_EXTENSION ||
                         structure.structureType == STRUCTURE_SPAWN) &&
                     structure.energy < structure.energyCapacity;
             }
         });
+        console.log(targets);
+        
         return targets
     }
 
@@ -202,12 +204,6 @@ class Carry extends Creep {
             return strage
         }
         return null
-    }
-
-    hasNeedEnergyStructures() {
-        return (this.getNotFullEnergySpawnAndExtension().length > 0 ||
-            this.getNeedEnergyTower().length > 0 ||
-            this.getNeedEnergyContainer().length > 0)
     }
 
 }

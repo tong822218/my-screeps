@@ -28,7 +28,6 @@ var CreepManage = {
   // 初始化函数
   start: function () {
     this.creeps = {}
-    console.log(JSON.stringify(this.creeps))
     this.classify() // creep初始化并分组
     this.startWorkStream()
   },
@@ -62,12 +61,9 @@ var CreepManage = {
     }
   },
   spawnCarry() {
-    // console.log(JSON.stringify(this.creeps.carry));
     
     if (!this.creeps[constant.CREEP_TYPE_CARRY] || this.creeps[constant.CREEP_TYPE_CARRY].length < this.maxAmount.carry) {
       // 如果能生產大的就生产打的，能量不够并且没有carry了就生产小的临时用
-     console.log(1);
-     
       if (this.spawn.spawnCreep(constant.CREEP_BODY_CARRY, 'carry' + Game.time, {
           dryRun: true
         })==0) {
@@ -142,7 +138,6 @@ var CreepManage = {
   // 将creep分类存放到数组
   classify() {
     for (var name in Game.creeps) {
-      console.log(name);
       
       var creep = Game.creeps[name];
       let mycreep
