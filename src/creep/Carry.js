@@ -169,7 +169,6 @@ class Carry extends Creep {
                     structure.energy < structure.energyCapacity;
             }
         });
-        console.log(targets);
         
         return targets
     }

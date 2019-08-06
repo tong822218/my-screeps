@@ -67,6 +67,7 @@ var CreepManage = {
       if (this.spawn.spawnCreep(constant.CREEP_BODY_CARRY, 'carry' + Game.time, {
           dryRun: true
         })==0) {
+          
         this.spawnCreep('carry' + Game.time, constant.CREEP_TYPE_CARRY)
       } else if (!this.creeps[constant.CREEP_TYPE_CARRY] || this.creeps[constant.CREEP_TYPE_CARRY].length == 0) {
         this.spawnLitter()
