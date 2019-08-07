@@ -73,8 +73,8 @@ class Builder extends Creep {
             }
 
         })
-        if(targets.length > 0){
-            this.creep.repair(targets[0])
+        if(targets){
+            this.creep.repair(targets)
         }
 
     }
